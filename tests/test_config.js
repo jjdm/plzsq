@@ -5,7 +5,7 @@ var config = require('./../models/config').instance();
 
 describe('test_config', function() {
 	it('test_config_initial_instance', function() {
-		expect(config.instance().get()).to.eql({});
+		expect(config.get()).to.eql({});
 	}),
 	it('test_config_singleton', function() {
 		var c1 = require('./../models/config').instance();

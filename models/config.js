@@ -18,7 +18,6 @@ var constructor = function Configuration() {
 	this.get = function() {
 		return _data;
 	};
-	this.name = "COULD CHANGE";
 }
 
 exports = module.exports = Object.freeze({
