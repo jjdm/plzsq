@@ -1,0 +1,40 @@
+# You can edit and validate YAML files online at http://beautifytools.com/yaml-validator.php
+sessionTitle: YAML Configuration
+timeLimit: 120
+maxPrice: 600
+maxDividend: 600
+features:
+    autoClue: true
+    randomizeAlgos: false
+    # TODO JJDM The following features have not been implemented
+    participation: false
+    betting: true
+    carryOverCash: false
+    carryOverParticipationCash: true
+    carryOverCoupons: false
+roles:
+    trader: { tickets: 4, endowment: 1200 }
+states:
+    X: { value: 50, notClue: The certificate is not worth 50 Francs (Not X-Dividend) }
+    Y: { value: 240, notClue: The certificate is not worth 240 Francs (Not Y-Dividend) }
+    Z: { value: 490, notClue: The certificate is not worth 490 Francs (Not Z-Dividend) }
+players:
+    a1: { role: trader, displayIds: [A, D, E, B, C] }
+    a2: { role: trader, clues: [Z, Z, Y, Y, X], displayIds: [A, B, C, D, E] }
+algos:
+    r1: { role: trader, clues: [Z, Z, Y, Y, X], displayIds: [A, B, C, D, E], type: SomeAlgo }
+    r2: { role: trader, displayIds: [A, B, C, D, E], type: SomeOtherAlgo, roundsActive: [1, 2, 4] }
+rounds:
+    - { id: 1, commonMessage: common, trueState: X, possibleHints: [Y, Z] }
+    - { id: 2, commonMessage: common, actualValue: 240, possibleHints: [Y, Z] }
+    - { id: 3, commonMessage: common, actualValue: 490, possibleHints: [Y, Z] }
+    - { id: 4, commonMessage: common, actualValue: 490, possibleHints: [Y, Z] }
+    - { id: 5, commonMessage: common, actualValue: 50, possibleHints: [Y, Z] }
+labels:
+    round: Year
+    shares: Certificate
+    cash: Francs
+    actualValue: <b>Certificate Value this Year</b>
+    totalAssets: <b>Total Franc Balance</b><br><font size='-2'>(Francs + Certificate value)</font>
+    common: Each certificate will be worth either 50, 240 or 490 Francs.
+#failme: true
