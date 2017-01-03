@@ -2,6 +2,9 @@
 var chai = require('chai');
 var expect = chai.expect;
 var config = require('./../models/config').instance();
+var log = require('./../models/utils').logger
+
+log.info("Message in test_config.", { foo: 'bar' })
 
 describe('test_config', function() {
 	it('test_config_initial_instance', function() {

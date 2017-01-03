@@ -48,3 +48,4 @@ Temporary Items
 
 # NodeJS
 node_modules
+*.log
