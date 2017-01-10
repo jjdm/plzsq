@@ -1,14 +1,14 @@
 "use strict";
-var yaml = require('js-yaml');
-var fs = require('fs');
-var utils = require('./utils')
-var log = utils.logger
+const yaml = require('js-yaml');
+const fs = require('fs');
+const utils = require('./utils')
+const log = utils.logger
 
 const CONFIGURATION_KEY = "io.jjdm.chapman.plzsq.Configuration";
 
-var constructor = function Configuration() {
+const constructor = function Configuration() {
 	log.info("Private Configuration constructor called.");
-	var _data = {};
+	let _data = {};
 	this.load = function(yamlFile) {
 		try {
 			_data = yaml.safeLoad(fs.readFileSync(yamlFile, 'utf8'));

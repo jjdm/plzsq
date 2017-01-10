@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
-var calls = 0;
+let calls = 0;
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
