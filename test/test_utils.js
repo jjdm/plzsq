@@ -14,7 +14,7 @@ describe('test_utils', function() {
 	}),
 	it('test_utils_sleep', function() {
 		log.debug("Before sleep");
-		utils.sleep(500);
+		utils.sleep(25);
 		log.debug("After sleep");
 	})
 });
