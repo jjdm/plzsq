@@ -1,9 +1,9 @@
 "use strict";
 const chai = require('chai');
 const expect = chai.expect;
-const utils = require('./../models/utils');
+const utils = require('./../common/utils');
 const log = utils.logger;
-const jobs = require('./../models/jobs').instance();
+const jobs = require('./../common/jobs').instance();
 
 describe('test_jobs', function() {
 	it('test_jobs_delay', function(done) {

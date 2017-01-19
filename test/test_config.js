@@ -1,8 +1,8 @@
 "use strict";
 const chai = require('chai');
 const expect = chai.expect;
-const config = require('./../models/config').instance();
-const log = require('./../models/utils').logger
+const config = require('./../common/config').instance();
+const log = require('./../common/utils').logger
 
 log.info("Message in test_config.", { foo: 'bar' })
 
@@ -11,8 +11,8 @@ describe('test_config', function() {
 		expect(config.get()).to.eql({});
 	}),
 	it('test_config_singleton', function() {
-		let c1 = require('./../models/config').instance();
-		let c2 = require('./../models/CONFIG').instance();
+		let c1 = require('./../common/config').instance();
+		let c2 = require('./../common/CONFIG').instance();
 		c1.name = "NAME 1";
 		expect(c2.name).to.eql(c1.name);
 	}),
