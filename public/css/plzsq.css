@@ -1,0 +1,32 @@
+/*
+.container {
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: auto;
+	max-width: 1900px;
+	min-width: 1900px;
+}
+*/
+
+@media (min-width: 1900px) {
+  .container {
+    width: 1900px;
+  }
+}
+
+/*************** Chart ***************/
+
+#tradingChart {
+	width: 100%;
+	height: 375px;
+}
+#marketHistoryContainer {
+	height: 400px;
+	overflow-y: scroll;
+}
+#marketHistory .trader {
+	text-align: right;
+}
+.canvasjs-chart-credit {
+	display: none;
+}
