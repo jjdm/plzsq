@@ -1,7 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  p Josh is here more here Adam Josh
-  p Another test.
+	h1= title
+	p Welcome to #{title}
+	p Josh is here more here Adam Josh
+	p Another test.
+	script.
+		var ws = new WebSocket('ws://localhost:8080/');
+		ws.onopen = function () {
+		  		console.log("Opened client WS: %s", ws.url);
+				ws.send(JSON.stringify({type: "bid", amount: 20}));
+		};

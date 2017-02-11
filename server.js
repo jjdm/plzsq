@@ -10,8 +10,11 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-var app = express();
-var ws = require('express-ws')(app);
+// create the server
+const app = express();
+app.set('port', port);
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,8 +29,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routing
-app.use('/', require('./market/index'));
-app.use('/market', require('./market/index'));
+app.get('/', function(req, res) {
+  res.render('index', { title: 'Express', useCdn: false });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -38,19 +42,18 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  // render the error page
+  res.locals.error = err;
   res.status(err.status || 500);
   res.render('error');
 });
 
-// create the server
-app.set('port', port);
-var server = http.createServer(app);
-server.listen(port);
+// start Listening
+server.listen(port, function () {
+	console.log('Listening on %d', server.address().port);
+});
 
+// error handling
 server.on('error', function(error) {
 	if (error.syscall !== 'listen') {
 		throw error;
@@ -69,6 +72,20 @@ server.on('error', function(error) {
 	}
 });
 
-server.on('listening', function() {
-	console.log('Listening on ' + port);
+// web socket connections
+wss.on('connection', function connection(ws) {
+	console.log("Websocket connected %s", Object.keys(ws));
+	ws.on('message', function message(json) {
+		let data = JSON.parse(json)
+		console.log("message is: %j", data);
+	});
 });
+
+// Broadcast to all.
+wss.broadcast = function broadcast(data) {
+	wss.clients.forEach(function each(client) {
+		if (client.readyState === WebSocket.OPEN) {
+			client.send(data);
+		}
+	});
+};

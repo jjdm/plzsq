@@ -1,9 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', useCdn: false });
-});
+module.exports = function(wss) {
 
-module.exports = router;
+	wss.on('connection', function connection(ws) {
+
+		console.log("Websocket connected %s", ws);
+	});
+
+	/* GET home page. */
+	router.get('/', function(req, res, next) {
+	  res.render('index', { title: 'Express', useCdn: false });
+	});
+
+	return router;
+
+};
