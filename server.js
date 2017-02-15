@@ -1,5 +1,8 @@
+"use strict";
+// TODO JJDM - externalize configuration port
 const port = 8080;
 
+// libraries
 const express = require('express');
 const http = require('http');
 const url = require('url');
@@ -9,12 +12,14 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const socket = require('./lib/socket').instance();
 
 // create the server
 const app = express();
 app.set('port', port);
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
+socket.initialize(wss);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// routing
+// page routing
 app.get('/', function(req, res) {
   res.render('index', { title: 'Express', useCdn: false });
 });
@@ -71,21 +76,3 @@ server.on('error', function(error) {
 			throw error;
 	}
 });
-
-// web socket connections
-wss.on('connection', function connection(ws) {
-	console.log("Websocket connected %s", Object.keys(ws));
-	ws.on('message', function message(json) {
-		let data = JSON.parse(json)
-		console.log("message is: %j", data);
-	});
-});
-
-// Broadcast to all.
-wss.broadcast = function broadcast(data) {
-	wss.clients.forEach(function each(client) {
-		if (client.readyState === WebSocket.OPEN) {
-			client.send(data);
-		}
-	});
-};
