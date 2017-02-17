@@ -5,7 +5,6 @@ const port = 8080;
 // libraries
 const express = require('express');
 const http = require('http');
-const url = require('url');
 const WebSocket = require('ws');
 const path = require('path');
 const favicon = require('serve-favicon');

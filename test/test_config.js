@@ -2,7 +2,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 const config = require('./../lib/config').instance();
-const log = require('./../lib/utils').logger
+const log = require('./../lib/utils').logger;
 
 log.info("Message in test_config.", { foo: 'bar' })
 
