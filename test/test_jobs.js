@@ -8,7 +8,7 @@ const jobs = require('./../lib/jobs').instance();
 describe('test_jobs', function() {
 	it('test_jobs_delay', function(done) {
 		// need to check the log for this one
-		setTimeout(done(), 25);
+		setTimeout(done, 25);
 		jobs.delay(function(name) {
 			log.debug("Hello " + name);
 		}, 10, "Josh");
@@ -16,7 +16,7 @@ describe('test_jobs', function() {
 	}),
 	it('test_jobs_schedule', function(done) {
 		// need to check the log for this one
-		setTimeout(done(), 75);
+		setTimeout(done, 75);
 		let i = 0;
 		jobs.schedule(function(name) {
 			log.debug("Hello " + name);

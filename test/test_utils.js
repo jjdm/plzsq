@@ -16,5 +16,14 @@ describe('test_utils', function() {
 		log.debug("Before sleep");
 		utils.sleep(25);
 		log.debug("After sleep");
+	}),
+	it('test_utils_sort', function() {
+		let items = [1, 13, 7, 3, 9];
+		let sorted = items.sort(function(a, b) {
+			return b - a;
+		});
+		log.debug(`items: ${items}`);
+		log.debug(`items: ${items.sort()}`);
+		log.debug(`items: ${items}`);
 	})
 });
