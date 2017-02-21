@@ -1,11 +1,24 @@
 doctype html
-html
+html(lang='en')
 	head
 		title= title
 		link(rel='stylesheet', href='/css/bootstrap_flatly.css')
+		link(rel='stylesheet', href='/css/plzsq.css')
+	style
+
 	body
-		block content
-		p booya
+		nav.navbar.navbar-default
+			div.container-fluid
+				div.navbar-header
+					a.navbar-brand
+						img(src='/img/plazasq.svg', alt='Plaza Square')
+						span= title
+				div.collapse.navbar-collapse
+					ul.nav.navbar-nav.navbar-right
+						li
+							a(href="#") Link
+		div.container-fluid
+			block content
 		if useCdn
 			script(type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js')
 		else

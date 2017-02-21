@@ -1,6 +1,6 @@
 "use strict";
-// TODO JJDM - externalize configuration port
-const port = 8080;
+const PORT = process.env.PORT || 8080;
+const USE_CDN = false; // TODO JJDM Tie this to development vs. production
 
 // libraries
 const express = require('express');
@@ -8,14 +8,14 @@ const http = require('http');
 const WebSocket = require('ws');
 const path = require('path');
 const favicon = require('serve-favicon');
-const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const socket = require('./lib/socket').instance();
+const log = require('./lib/utils').logger;
 
 // create the server
 const app = express();
-app.set('port', port);
+app.set('port', PORT);
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 socket.initialize(wss);
@@ -26,7 +26,6 @@ app.set('view engine', 'jade');
 
 // parsing
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon.png')));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -34,41 +33,46 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // page routing
 app.get('/', function(req, res) {
-  res.render('index', { title: 'Express', useCdn: false });
+	res.locals.title = 'Chapman Trading';
+	res.locals.useCdn = USE_CDN;
+	res.render('index');
 });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+	var err = new Error('File Not Found');
+	err.status = 404;
+	next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = err;
-  res.status(err.status || 500);
-  res.render('error');
+	log.error(err);
+	res.locals.message = err.message;
+	res.locals.error = err;
+	res.status(err.status || 500);
+	res.locals.title = `Error: ${err.message}`;
+	res.render('error');
 });
 
 // start Listening
-server.listen(port, function () {
+server.listen(PORT, function () {
 	console.log('Listening on %d', server.address().port);
 });
 
 // error handling
 server.on('error', function(error) {
+	log.error(`Server on error: ${error}`);
 	if (error.syscall !== 'listen') {
 		throw error;
     }
     switch (error.code) {
 		case 'EACCES':
-			console.error(port + ' requires elevated privileges');
+			console.error(PORT + ' requires elevated privileges');
 			process.exit(1);
 			break;
 		case 'EADDRINUSE':
-			console.error(port + ' is already in use');
+			console.error(PORT + ' is already in use');
 			process.exit(1);
 			break;
 		default:

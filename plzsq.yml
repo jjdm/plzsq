@@ -1,0 +1,15 @@
+apps:
+  - script: server.js
+    name: plzsq_lab1
+    max_restarts: 5
+    out_file: /git/plzsq/logs/plzsq_lab1_pm2.log
+    error_file: /git/plzsq/logs/plzsq_lab1_pm2.log
+    watch: true
+    ignore_watch:
+      - node_modules
+      - logs
+    env:
+      PORT: 9080
+      NODE_ENV: development
+    env_production:
+      NODE_ENV: production
