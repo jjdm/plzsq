@@ -10,6 +10,7 @@ apps:
       - logs
     env:
       PORT: 9080
+      LAB: 1
       NODE_ENV: development
     env_production:
       NODE_ENV: production
