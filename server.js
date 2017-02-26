@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const socket = require('./lib/socket').instance();
 const log = require('./lib/utils').logger;
+const market = require('./lib/market').instance();
 
 // create the server
 const app = express();
@@ -19,6 +20,7 @@ app.set('port', PORT);
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 socket.initialize(wss);
+market.registerWithSocket(socket);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +42,7 @@ app.get('/', function(req, res) {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-	var err = new Error('File Not Found');
+	var err = new Error(`File Not Found: ${req.path}`);
 	err.status = 404;
 	next(err);
 });
@@ -57,10 +59,10 @@ app.use(function(err, req, res, next) {
 
 // start Listening
 server.listen(PORT, function () {
-	console.log('Listening on %d', server.address().port);
+	log.debug('Listening on %d', server.address().port);
 });
 
-// error handling
+// error handling for server
 server.on('error', function(error) {
 	log.error(`Server on error: ${error}`);
 	if (error.syscall !== 'listen') {
@@ -68,11 +70,11 @@ server.on('error', function(error) {
     }
     switch (error.code) {
 		case 'EACCES':
-			console.error(PORT + ' requires elevated privileges');
+			log.error(PORT + ' requires elevated privileges');
 			process.exit(1);
 			break;
 		case 'EADDRINUSE':
-			console.error(PORT + ' is already in use');
+			log.error(PORT + ' is already in use');
 			process.exit(1);
 			break;
 		default:

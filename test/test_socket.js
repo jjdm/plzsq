@@ -23,7 +23,7 @@ const MockRobot = function() {
 	};
 	self.registerWithSocket = function(socket) {
 		// only register with BID
-		socket.registerOnMessage(socket.MESSAGE_TYPE.BID, self.increment);
+		socket.registerOnMessage("BID", self.increment);
 	}
 }
 
@@ -47,12 +47,10 @@ describe('test_socket', function() {
 		let robot = new MockRobot();
 		robot.registerWithSocket(socket);
 		client.on('open', function open() {
-		  client.send(JSON.stringify({type: socket.MESSAGE_TYPE.BID, data: {user: "a1", amount: 20} }));
-		  client.send(JSON.stringify({type: socket.MESSAGE_TYPE.ASK, data: {user: "a2", amount: 10} }));
-		  client.send(JSON.stringify({type: socket.MESSAGE_TYPE.BID, data: {user: "a3", amount: 30} }));
+		  client.send(JSON.stringify({type: "BID", data: {user: "a1", amount: 20} }));
+		  client.send(JSON.stringify({type: "ASK", data: {user: "a2", amount: 10} }));
+		  client.send(JSON.stringify({type: "BID", data: {user: "a3", amount: 30} }));
 		});
-		expect(socket.MESSAGE_TYPE.BID.name).to.equal('BID');
-		expect(socket.MESSAGE_TYPE.SELL.value).to.equal(3);
 		setTimeout(function() {
 			expect(robot.count).to.equal(2);
 			expect(robot.getInternalCount()).to.equal(4);
