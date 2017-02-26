@@ -35,7 +35,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // page routing
 app.get('/', function(req, res) {
-	res.locals.title = 'Chapman Trading';
+	res.locals.title = `Login Page`;
+	res.locals.useCdn = USE_CDN;
+	res.render('login');
+});
+
+// page routing
+app.get('/login/:id', function(req, res) {
+	res.redirect(`/user/${req.params.id}`);
+});
+
+// page routing
+app.get('/user/:id', function(req, res) {
+	res.locals.title = `Chapman Trading for ${req.params.id}`;
 	res.locals.useCdn = USE_CDN;
 	res.render('index');
 });
