@@ -6,10 +6,10 @@ block content
 	p Josh is here more here Adam Josh
 	p Another test.
 	script.
-		var ws = new WebSocket('ws://localhost:9080/?user=a1');
+		var ws = new WebSocket('ws://localhost:8080/?user=a3');
 		ws.onopen = function () {
 		  		logger.log("Opened client WS: %s", ws.url);
-				ws.send(JSON.stringify({type: "BID1", amount: 20, user: "a1"}));
+				ws.send(JSON.stringify({type: "BID", amount: 20, user: "a1"}));
 		};
 		ws.onmessage = function(message) {
 			logger.log("Received message: %s", message.data);

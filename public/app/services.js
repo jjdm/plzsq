@@ -1,10 +1,9 @@
 angular.module("plazaSq.services", [])
-	.factory("StompClient", ["$q", function ($q) {
-		var stompClient;
-		var wrappedSocket = {
-			init: function (url) {
-				stompClient = Stomp.over(new SockJS(url));
-				// stompClient.debug = null;
+	.factory("WebSocketClient", ["$q", function ($q) {
+		var ws;
+		var webSocketClient = {
+			init: function (user, port) {
+				ws = 'ws://localhost:' + port + '/?user=' + user;
 			},
 			connect: function () {
 				return $q(function (resolve, reject) {
@@ -48,7 +47,7 @@ angular.module("plazaSq.services", [])
 				stompClient.send(destination, headers, object);
 			}
 		};
-		return wrappedSocket;
+		return webSocketClient;
 	}])
 	.factory('TradeService', ['StompClient', '$q', function (stompClient, $q) {
 		return {

@@ -55,6 +55,13 @@ describe('test_socket', function() {
 			expect(robot.count).to.equal(2);
 			expect(robot.getInternalCount()).to.equal(4);
 		}, 25);
+	}),
+	it('test_socket_user', function(done) {
+		// need to check the log for this one
+		setTimeout(done, 50);
+		const client = new WebSocket(`ws://localhost:${port}/?user=a1`);
+		client.on('open', function open() {
+		  log.debug('Opened WS client.');
+		});
 	})
-
 });
