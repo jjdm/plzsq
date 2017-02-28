@@ -21,9 +21,13 @@ const MockRobot = function() {
 	self.getInternalCount = function() {
 		return _count;
 	};
+	self.doNothing = function() {
+		return 0;
+	}
 	self.registerWithSocket = function(socket) {
 		// only register with BID
 		socket.registerOnMessage("BID", self.increment);
+		socket.registerOnMessage("ASK", self.doNothing);
 	}
 }
 
