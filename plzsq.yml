@@ -8,6 +8,8 @@ apps:
     ignore_watch:
       - node_modules
       - logs
+      - .git
+      - docs
     env:
       PORT: 9080
       LAB: 1

@@ -35,7 +35,7 @@ const PORT = 8989;
 
 describe('test_socket', function() {
 	before(function(done) {
-		setTimeout(done, 50);
+		setTimeout(done, 100);
 		// setup websocket server
 		const app = express();
 		app.set('port', PORT);
@@ -48,7 +48,7 @@ describe('test_socket', function() {
     });
 	it('test_socket_basic', function(done) {
 		// need to check the log for this one
-		setTimeout(done, 50);
+		setTimeout(done, 40);
 		const client = new WebSocket(`ws://localhost:${PORT}`);
 		let robot = new MockRobot();
 		robot.registerWithSocket(socket);
@@ -60,14 +60,32 @@ describe('test_socket', function() {
 		setTimeout(function() {
 			expect(robot.count).to.equal(2);
 			expect(robot.getInternalCount()).to.equal(4);
-		}, 25);
+		}, 20);
 	}),
 	it('test_socket_user', function(done) {
 		// need to check the log for this one
-		setTimeout(done, 50);
+		setTimeout(done, 20);
 		const client = new WebSocket(`ws://localhost:${PORT}/?user=a1`);
 		client.on('open', function open() {
 		  log.debug('Opened WS client.');
 		});
+	}),
+	it('test_socket_multiuser', function(done) {
+		// need to check the log for this one
+		setTimeout(done, 30);
+		let client1Count = 0;
+		let client2Count = 0;
+		const client1 = new WebSocket(`ws://localhost:${PORT}/?user=a1`);
+		const client2 = new WebSocket(`ws://localhost:${PORT}/?user=a2`);
+		client1.onmessage = function() { client1Count++; };
+		client2.onmessage = function() { client2Count++; };
+		setTimeout(function() {
+			socket.broadcast({type: "SOMETHING", amount: 20});
+			socket.send("a1", {type: "SOMETHING ELSE", amount: 50});
+		}, 10);
+		setTimeout(function() {
+			expect(client1Count).to.equal(2);
+			expect(client2Count).to.equal(1);
+		}, 20);
 	})
 });

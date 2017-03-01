@@ -49,6 +49,7 @@ app.get('/login/:id', function(req, res) {
 app.get('/user/:id', function(req, res) {
 	res.locals.title = `Chapman Trading for ${req.params.id}`;
 	res.locals.useCdn = USE_CDN;
+	res.locals.user = req.params.id;
 	res.render('index');
 });
 
