@@ -31,23 +31,25 @@ const MockRobot = function() {
 	}
 }
 
+const PORT = 8989;
+
 describe('test_socket', function() {
-
-	// setup websocket
-	const port = 8989;
-	const app = express();
-	app.set('port', port);
-	const server = http.createServer(app);
-	const wss = new WebSocket.Server({ server });
-	socket.initialize(wss);
-	server.listen(port, function () {
-		log.info('Listening on %d', server.address().port);
-	});
-
+	before(function(done) {
+		setTimeout(done, 50);
+		// setup websocket server
+		const app = express();
+		app.set('port', PORT);
+		const server = http.createServer(app);
+		const wss = new WebSocket.Server({ server });
+		socket.initialize(wss);
+		server.listen(PORT, function () {
+			log.info('Listening on %d', server.address().port);
+		});
+    });
 	it('test_socket_basic', function(done) {
 		// need to check the log for this one
 		setTimeout(done, 50);
-		const client = new WebSocket(`ws://localhost:${port}`);
+		const client = new WebSocket(`ws://localhost:${PORT}`);
 		let robot = new MockRobot();
 		robot.registerWithSocket(socket);
 		client.on('open', function open() {
@@ -63,7 +65,7 @@ describe('test_socket', function() {
 	it('test_socket_user', function(done) {
 		// need to check the log for this one
 		setTimeout(done, 50);
-		const client = new WebSocket(`ws://localhost:${port}/?user=a1`);
+		const client = new WebSocket(`ws://localhost:${PORT}/?user=a1`);
 		client.on('open', function open() {
 		  log.debug('Opened WS client.');
 		});
