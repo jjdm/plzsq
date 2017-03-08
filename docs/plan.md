@@ -1,7 +1,15 @@
-*	Move code from plazasq Java
-* 	Repackage as needed
-*	Robots design
+Implementation Plan
+===================
+
+*	DESIGN: Robot design and sample implementation.
 *	End-to-end bid flow (Web page to "database")
+*	Finish design on front-end.
+*	Finish market actions.
+*	Upload new file.
+*	Round transition.
+*	Excel export after experiment.
+*	Save/restart experiments (serialize after each round).
+*	Robot implementations.
 
 
 Topics to Cover

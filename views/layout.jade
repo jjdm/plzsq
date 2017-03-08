@@ -1,5 +1,5 @@
 doctype html
-html(lang='en')
+html(lang='en', ng-app="plzsq")
 	head
 		title= title
 		link(rel='stylesheet', href='/css/bootstrap_flatly.css')
@@ -24,7 +24,8 @@ html(lang='en')
 			script(type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.2/angular.min.js')
 		else
 			script(type='text/javascript' src='/js/jquery-1.10.2.min.js')
-			script(type='text/javascript' src='/js/angular.1.5.7min.js')
+			script(type='text/javascript' src='/js/angular.1.5.7.min.js')
+			script(type='text/javascript' src='/js/angular-cookies.1.5.7.min.js')
 			script(type='text/javascript' src='/js/bootstrap.3.3.7.min.js')
 			script(type='text/javascript' src='/js/bootswatch-custom.js')
 			script(type='text/javascript' src='/js/stomp.2.3.3.min.js')

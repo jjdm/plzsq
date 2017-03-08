@@ -1,1 +1,1 @@
-angular.module("plazaSq", ["plazaSq.controllers", "plazaSq.services"]);
+angular.module("plzsq", ["plzsq.controllers", "plzsq.services"]);

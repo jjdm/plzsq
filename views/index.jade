@@ -5,15 +5,10 @@ block content
 	p Welcome to #{title}
 	p Josh is here more here Adam Josh
 	p Another test.
-	script.
-		var ws = new WebSocket('ws://localhost:9080/?user=#{user}');
-		ws.onopen = function () {
-		  		logger.log("Opened client WS: %s", ws.url);
-				ws.send(JSON.stringify({type: "BID", amount: 20, user: "#{user}"}));
-		};
-		ws.onmessage = function(message) {
-			logger.log("Received message: %s", message.data);
-		};
-		ws.onerror = function(error) {
-			logger.error("Error received: %s", error);
-		};
+	div(ng-controller='marketController')
+		h3 Place Order
+		input(ng-model="bid")
+		button(ng-click="placeBid()") Bid
+		input(ng-model="ask")
+		input(ng-model="buy")
+		input(ng-model="sell")

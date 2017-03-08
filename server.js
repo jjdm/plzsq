@@ -42,6 +42,7 @@ app.get('/', function(req, res) {
 
 // page routing
 app.get('/login/:id', function(req, res) {
+	res.cookie('plzsq.user', req.params.id);
 	res.redirect(`/user/${req.params.id}`);
 });
 
