@@ -43,15 +43,15 @@ app.get('/', function(req, res) {
 // page routing
 app.get('/login/:id', function(req, res) {
 	res.cookie('plzsq.user', req.params.id);
-	res.redirect(`/user/${req.params.id}`);
+	res.redirect(`/trade/${req.params.id}`);
 });
 
 // page routing
-app.get('/user/:id', function(req, res) {
+app.get('/trade/:id', function(req, res) {
 	res.locals.title = `Chapman Trading for ${req.params.id}`;
 	res.locals.useCdn = USE_CDN;
 	res.locals.user = req.params.id;
-	res.render('index');
+	res.render('trade');
 });
 
 // catch 404 and forward to error handler
