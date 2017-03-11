@@ -7,6 +7,9 @@
 	width: auto;
 	display: inline;
 }
+.navbar-brand span {
+	color: #ffffff;
+}
 .canvasjs-chart-credit {
 	display: none;
 }

@@ -1,4 +1,12 @@
 angular.module("plzsq.controllers", [])
+	.controller("loginController", ["$scope", "$log", function ($scope, $log) {
+		$scope.userId = null;
+		$scope.login = function() {
+			$log.debug("Login from " + $scope.userId);
+			window.location.href = "./login/" + $scope.userId;
+			$scope.userId = null;
+		};
+	}])
 	.controller("chartController", ["$scope", "$log", "tradeService", function ($scope, $log, tradeService) {
 
 		$scope.bids = tradeService.bids;

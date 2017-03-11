@@ -43,14 +43,25 @@ app.get('/', function(req, res) {
 // page routing
 app.get('/login/:id', function(req, res) {
 	res.cookie('plzsq.user', req.params.id);
-	res.redirect(`/trade/${req.params.id}`);
+	res.redirect('/trade');
+	return;
+});
+
+// check for cookie
+app.use(function(req, res, next) {
+	if(req.cookies["plzsq.user"]) {
+		next();
+	} else {
+		var err = new Error('You are not logged into the experiment.');
+		err.status = 401;
+		next(err);		
+	}
 });
 
 // page routing
-app.get('/trade/:id', function(req, res) {
-	res.locals.title = `Chapman Trading for ${req.params.id}`;
+app.get('/trade', function(req, res) {
+	res.locals.title = `Chapman Trading for ${req.cookies["plzsq.user"]}`;
 	res.locals.useCdn = USE_CDN;
-	res.locals.user = req.params.id;
 	res.render('trade');
 });
 
@@ -64,11 +75,9 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
 	log.error(err);
-	res.locals.message = err.message;
-	res.locals.error = err;
 	res.status(err.status || 500);
-	res.locals.title = `Error: ${err.message}`;
-	res.render('error');
+	res.locals.title = 'Error Page';
+	res.render('error', { error: err });
 });
 
 // start Listening

@@ -1,6 +1,10 @@
 extends layout
 
 block content
-	h1= message
-	h2= error.status
+	a(href="/") Return Home
+	h4 Error Message
+	p= error.message
+	h4 Error Code
+	p= error.status
+	h4 Error Stacktrace
 	pre #{error.stack}

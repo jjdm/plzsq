@@ -1,4 +1,16 @@
 extends layout
 
 block content
-	h1 You need to login.
+	div.row
+		div.col-lg-2
+			div
+				p Please enter your User ID below:
+				form.form-horizontal(ng-submit="login()" ng-controller="loginController")
+					fieldset
+						.form-group
+							label.control-label.col-lg-4(for="userId") User ID:
+							.col-lg-8
+								input.form-control(id="userId", ng-model="userId")
+						div.form-group
+							.col-lg-8.col-lg-offset-4
+								button.btn.btn-primary(type="submit") Login
