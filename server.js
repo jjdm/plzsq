@@ -40,11 +40,13 @@ app.get('/', function(req, res) {
 	res.render('login');
 });
 
+// TODO JJDM Logout (remove cookie)
+
 // page routing
 app.get('/login/:id', function(req, res) {
+	// TODO JJDM Need to ensure this is a valid user ID based on configuration
 	res.cookie('plzsq.user', req.params.id);
 	res.redirect('/trade');
-	return;
 });
 
 // check for cookie
@@ -54,7 +56,7 @@ app.use(function(req, res, next) {
 	} else {
 		var err = new Error('You are not logged into the experiment.');
 		err.status = 401;
-		next(err);		
+		next(err);
 	}
 });
 
