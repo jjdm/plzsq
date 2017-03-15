@@ -7,6 +7,24 @@ angular.module("plzsq.controllers", [])
 			$scope.userId = null;
 		};
 	}])
+	.directive('configFileChange', ["$log", function($log) {
+		return {
+			link: function ($scope, $element, $attrs) {
+				$log.debug("link function");
+				$element.bind('change', $scope.updateDisplay);
+			}
+		};
+	}])
+	.controller("adminController", ["$scope", "$log", function ($scope, $log) {
+		$scope.selectFile = function() { $('#configFile').click(); };
+		$scope.updateDisplay = function() {
+			$log.debug('updateDisplay called');
+			$('#configFileDisplay').val($('#configFile').val());
+		};
+		$scope.logFile = function() {
+			$log.debug('jQuery File is: ' + $('#configFile').val());
+		};
+	}])
 	.controller("chartController", ["$scope", "$log", "tradeService", function ($scope, $log, tradeService) {
 
 		$scope.bids = tradeService.bids;

@@ -8,9 +8,9 @@ block content
 				form.form-horizontal(ng-submit="login()" ng-controller="loginController")
 					fieldset
 						.form-group
-							label.control-label.col-lg-4(for="userId") User ID:
+							label.col-lg-4.control-label(for="userId") User ID:
 							.col-lg-8
 								input.form-control(id="userId", ng-model="userId")
-						div.form-group
-							.col-lg-8.col-lg-offset-4
-								button.btn.btn-primary(type="submit") Login
+						.form-group
+							.col-lg-4.col-lg-offset-8
+								button.btn.btn-primary.form-control(type="submit") Login
