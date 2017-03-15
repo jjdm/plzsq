@@ -1,7 +1,9 @@
 extends layout
 
 block content
-	a(href="/") Return Home
+	a(href="/")
+		span.glyphicon.glyphicon-home
+		span &nbsp; Return Home
 	h4 Error Message
 	p= error.message
 	h4 Error Code

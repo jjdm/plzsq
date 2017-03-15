@@ -1,6 +1,6 @@
 "use strict";
 const PORT = process.env.PORT || 8080;
-const USE_CDN = false; // TODO JJDM Tie this to development vs. production
+const USE_CDN = true; // TODO JJDM Tie this to development vs. production
 const ADMIN_LOGIN = 'experimenter';
 
 // libraries
@@ -36,6 +36,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
+// error creation
+function createError(message, status) {
+	let error = new Error(message);
+	error.status = status;
+	return error;
+}
+
 // set globals
 app.use(function(req, res, next) {
 	res.locals.useCdn = USE_CDN;
@@ -69,9 +76,7 @@ app.get('/login/:id', function(req, res) {
 app.use(function(req, res, next) {
 	let userId = req.cookies["plzsq.user"];
 	if(!userId) {
-		let err = new Error('You are not logged into the experiment.');
-		err.status = 401;
-		next(err);
+		next(createError('You are not logged into the experiment.', 401));
 	} else {
 		next()
 	}
@@ -81,9 +86,7 @@ app.use(function(req, res, next) {
 app.use('/admin', function(req, res, next) {
 	let userId = req.cookies["plzsq.user"];
 	if(userId != ADMIN_LOGIN) {
-		let err = new Error('You are not authorized to access this page.');
-		err.status = 401;
-		next(err);
+		next(createError('You are not authorized to access this page.', 401));
 	} else {
 		next()
 	}
@@ -101,6 +104,22 @@ app.get('/admin/config', function(req, res, next) {
 	res.render('admin');
 });
 
+// upload file
+app.post('/admin/config', function(req, res, next) {
+	if (!req.files.configUploadFile) {
+		next(createError('No files were uploaded.', 400));
+	}
+	let uploadedFile = req.files.configUploadFile;
+	uploadedFile.mv(`/git/plzsq/logs/${uploadedFile.name}`, function(err) {
+		if(err) {
+			next(err);
+		} else {
+			// TODO JJDM Shutdown experiment, and load configuration
+			res.send('File uploaded!');
+		}
+	});
+});
+
 // trader
 app.get('/trade', function(req, res) {
 	res.locals.title = `Chapman Trading for ${req.cookies["plzsq.user"]}`;
@@ -109,9 +128,7 @@ app.get('/trade', function(req, res) {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-	let err = new Error(`File Not Found: ${req.path}`);
-	err.status = 404;
-	next(err);
+	next(createError(`File Not Found: ${req.path}`, 404));
 });
 
 // error handler

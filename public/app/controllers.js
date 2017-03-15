@@ -7,22 +7,19 @@ angular.module("plzsq.controllers", [])
 			$scope.userId = null;
 		};
 	}])
-	.directive('configFileChange', ["$log", function($log) {
+	.directive('configUpload', ["$log", function($log) {
 		return {
-			link: function ($scope, $element, $attrs) {
-				$log.debug("link function");
-				$element.bind('change', $scope.updateDisplay);
-			}
-		};
-	}])
-	.controller("adminController", ["$scope", "$log", function ($scope, $log) {
-		$scope.selectFile = function() { $('#configFile').click(); };
-		$scope.updateDisplay = function() {
-			$log.debug('updateDisplay called');
-			$('#configFileDisplay').val($('#configFile').val());
-		};
-		$scope.logFile = function() {
-			$log.debug('jQuery File is: ' + $('#configFile').val());
+			restrict: 'E',
+			templateUrl: '/app/config-upload.html',
+			link: function(scope, elem, attrs) {
+				scope.configUploadId = attrs['id'];
+				var button = $('config-upload button.config-upload-button');
+				var display = $('config-upload input.config-upload-display');
+				var file = $('config-upload input.config-upload-file');
+				display.val(file.val());
+				button.click(function() { file.click(); });
+				file.change(function() { display.val(file.val()); });
+		    }
 		};
 	}])
 	.controller("chartController", ["$scope", "$log", "tradeService", function ($scope, $log, tradeService) {

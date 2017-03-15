@@ -10,6 +10,7 @@ Implementation Plan
 *	Excel export after experiment.
 *	Save/restart experiments (serialize after each round).
 *	Robot implementations.
+*	Starting rounds - pause vs. explicit start.
 
 
 Topics to Cover

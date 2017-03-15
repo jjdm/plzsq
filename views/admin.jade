@@ -7,19 +7,14 @@ block content
 			#tradingChart
 			h4 History Log
 			p More text here
-		div.col-lg-4(ng-controller='adminController')
-			h4 Upload New Configuration
-			.well
-				form.form-horizontal(ref='uploadForm', id='uploadForm', action='./config', method='post', encType='multipart/form-data')
-					fieldset
-						.form-group
-							label.control-label.col-lg-4(for="configFileDisplay") Configuration File:
-							.col-lg-8
-								input.hidden(type='file', id='configFile', name='configFile', ng-model='configFile', config-file-change)
-								.input-group
-									input.form-control(type='text', id='configFileDisplay', name='configFileDisplay', ng-model='configFileDisplay')
-									span.input-group-btn
-										button.btn.btn-default(type='button', ng-click="selectFile()") Browse...
-						.form-group
-							.col-lg-4.col-lg-offset-8
-								button.btn.btn-primary.form-control(type='submit') Upload
+		div.col-lg-9
+			form.form-horizontal(ref='uploadForm', id='uploadForm', action='./config', method='post', encType='multipart/form-data')
+				.form-group
+					h4.col-lg-3 Trader Summary
+					label.control-label.col-lg-3(for="configFileDisplay") Upload New Configuration File:
+					.col-lg-5
+						config-upload(id="adminUpload")
+					.col-lg-1
+						button.btn.btn-primary.form-control(type='submit' ng-submit='upload') Upload
+			h4 Details go here
+			p Something here.
