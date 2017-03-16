@@ -50,4 +50,3 @@ Temporary Items
 node_modules
 *.log
 .idea
-logs

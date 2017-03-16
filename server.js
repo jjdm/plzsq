@@ -99,25 +99,22 @@ app.get('/admin', function(req, res, next) {
 });
 
 // upload file
-app.get('/admin/config', function(req, res, next) {
-	res.locals.title = 'Experimenter Config Page';
-	res.render('admin');
-});
-
-// upload file
 app.post('/admin/config', function(req, res, next) {
 	if (!req.files.configUploadFile) {
-		next(createError('No files were uploaded.', 400));
+		res.locals.message = 'Please select a file to upload.';
+		res.redirect('/admin');
+//		socket.send('experimenter', {type: 'message', error: false, message: 'Please select a file to upload.'});
+	} else {
+		let uploadedFile = req.files.configUploadFile;
+		uploadedFile.mv(`/git/plzsq/uploads/${uploadedFile.name}`, function(err) {
+			if(err) {
+				next(err);
+			} else {
+				// TODO JJDM Shutdown experiment, and load configuration
+				res.send('File uploaded!');
+			}
+		});
 	}
-	let uploadedFile = req.files.configUploadFile;
-	uploadedFile.mv(`/git/plzsq/logs/${uploadedFile.name}`, function(err) {
-		if(err) {
-			next(err);
-		} else {
-			// TODO JJDM Shutdown experiment, and load configuration
-			res.send('File uploaded!');
-		}
-	});
 });
 
 // trader

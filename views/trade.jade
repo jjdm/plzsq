@@ -1,16 +1,10 @@
-extends layout
+extends chart
 
-block content
-	div.row
-		div.col-lg-3(ng-controller='chartController')
-			h4 Chart
-			#tradingChart
-			h4 History Log
-			p More text here
-		div.col-lg-4(ng-controller='marketController')
-			h4 Actions
-			input(ng-model="bid", type="number", ng-keyup="$event.keyCode == 13 && placeBid()")
-			a.btn.btn-primary(ng-click="placeBid()") Bid
-			input(ng-model="ask")
-			input(ng-model="buy")
-			input(ng-model="sell")
+block middle
+	div.col-lg-4(ng-controller='marketController')
+		h4 Actions
+		input(ng-model="bid", type="number", ng-keyup="$event.keyCode == 13 && placeBid()")
+		a.btn.btn-primary(ng-click="placeBid()") Bid
+		input(ng-model="ask")
+		input(ng-model="buy")
+		input(ng-model="sell")
