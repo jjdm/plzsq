@@ -1,16 +1,20 @@
 extends chart
 
 block middle
-	div.col-lg-9
-		form.form-horizontal(ref='uploadForm', id='uploadForm', action='./config', method='post', encType='multipart/form-data')
+	div.col-lg-9(ng-controller='adminController')
+		form.form-horizontal(ref='uploadForm', id='uploadForm', name='uploadForm')
 			.form-group
 				.col-lg-4
 					.alert.alert-warning
 						p Some message
-				label.control-label.col-lg-2(for="configFileDisplay") Upload New Configuration File:
+				label.control-label.col-lg-2(for='configFileDisplay') Upload New Configuration File:
 				.col-lg-5
-					config-upload(id="adminUpload")
+					div#adminUpload.input-group(config-upload)
+						input#configUploadDisplay.form-control.config-upload-display(type='text', name='configUploadDisplay')
+						input#configUploadFile.hidden.config-upload-file(type='file', name='configUploadFile', ngf-select, ng-model='configUploadFile')
+						span.input-group-btn
+							button#configUploadButton.btn.btn-default.config-upload-button(type='button' ng-click='select()') Browse...
 				.col-lg-1
-					button.btn.btn-primary.form-control(type='submit' ng-submit='upload') Upload
+					button.btn.btn-primary.form-control(type='submit' ng-click='submit()') Upload
 		h4 Details go here
 		p Something here.

@@ -11,7 +11,12 @@ angular.module("plzsq.services", ["ngCookies"])
 		// get the port and user from the url
 		$log.log("Connecting to: " + urlService.getWsUrl());
 		var ws = new WebSocket(urlService.getWsUrl());
+		ws.binaryType = "arraybuffer";
 		return {
+			sendFile: function(file) {
+				$log.debug('Sending File');
+				ws.send(file);
+			},
 			getUser: function() { return urlService.getUser(); }
 		};
 	}])

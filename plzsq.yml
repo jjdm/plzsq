@@ -6,10 +6,13 @@ apps:
     error_file: /git/plzsq/logs/plzsq_lab1_pm2.log
     watch: true
     ignore_watch:
+      - .git
+      - .git_attributes
       - node_modules
       - logs
-      - .git
       - docs
+      - public
+      - uploads
     env:
       PORT: 9080
       LAB: 1

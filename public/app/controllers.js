@@ -1,40 +1,57 @@
-angular.module("plzsq.controllers", [])
-	.controller("loginController", ["$scope", "$log", function ($scope, $log) {
+angular.module('plzsq.controllers', ['ngFileUpload'])
+	.controller('loginController', ['$scope', '$log', function ($scope, $log) {
 		$scope.userId = null;
 		$scope.login = function() {
-			$log.debug("Login from " + $scope.userId);
-			window.location.href = "./login/" + $scope.userId;
+			$log.debug('Login from ' + $scope.userId);
+			window.location.href = './login/' + $scope.userId;
 			$scope.userId = null;
 		};
 	}])
-	.directive('configUpload', ["$log", function($log) {
+	.directive('configUpload', ['$log', function($log) {
 		return {
-			restrict: 'E',
-			templateUrl: '/app/config-upload.html',
+			restrict: 'A',
 			link: function(scope, elem, attrs) {
-				scope.configUploadId = attrs['id'];
-				var button = $('config-upload button.config-upload-button');
-				var display = $('config-upload input.config-upload-display');
-				var file = $('config-upload input.config-upload-file');
+				var id = '#' + attrs.id;
+				var button = $('button.config-upload-button', id);
+				var display = $('input.config-upload-display', id);
+				var file = $('input.config-upload-file', id);
 				display.val(file.val());
 				button.click(function() { file.click(); });
 				file.change(function() { display.val(file.val()); });
 		    }
 		};
 	}])
-	.controller("chartController", ["$scope", "$log", "tradeService", function ($scope, $log, tradeService) {
+	.controller('adminController', ['$scope', '$log', 'socketService', 'Upload', function ($scope, $log, socketService, Upload) {
+		$scope.submit = function() {
+			if ($scope.uploadForm.configUploadFile.$valid && $scope.configUploadFile) {
+				$scope.upload($scope.configUploadFile);
+	        }
+		};
+		$scope.upload = function(file) {
+			socketService.sendFile(file);
+			// Upload.upload({
+			// 	url: '/admin/config',
+			// 	data: {configUploadFile: file, 'username': $scope.username}
+			// }).then(function success(res) {
+			// 	$log.debug('Success ' + res.config.data.configUploadFile.name + 'uploaded. Response: ' + res.data.message);
+			// }, function error(res) {
+			// 	$log.debug('Error status: ' + res.status + ' ' + res.data.error);
+			// });
+		};
+	}])
+	.controller('chartController', ['$scope', '$log', 'tradeService', function ($scope, $log, tradeService) {
 
 		$scope.bids = tradeService.bids;
 		$scope.asks = tradeService.asks;
 		$scope.trades = tradeService.trades;
 
-		$scope.chart = new CanvasJS.Chart("tradingChart", {
+		$scope.chart = new CanvasJS.Chart('tradingChart', {
 			axisY: { minimum: 0, maximum: 600 },
-			axisX: { valueFormatString: " " },
+			axisX: { valueFormatString: ' ' },
 			data: [
-				{ type: "line", toolTipContent: "Trade at {y}", label: " ", dataPoints: [] },
-				{ type: "scatter", toolTipContent: "Ask at {y}", label: " ", dataPoints: [] },
-				{ type: "scatter", toolTipContent: "Bid at {y}", label: " ", dataPoints: [] }
+				{ type: 'line', toolTipContent: 'Trade at {y}', label: ' ', dataPoints: [] },
+				{ type: 'scatter', toolTipContent: 'Ask at {y}', label: ' ', dataPoints: [] },
+				{ type: 'scatter', toolTipContent: 'Bid at {y}', label: ' ', dataPoints: [] }
 			]
 		});
 
@@ -55,13 +72,13 @@ angular.module("plzsq.controllers", [])
 		$scope.$watchCollection('trades', function () { $scope.updateChart(); });
 
 	}])
-	.controller("marketController", ["$scope", "$log", "tradeService", function ($scope, $log, tradeService) {
+	.controller('marketController', ['$scope', '$log', 'tradeService', function ($scope, $log, tradeService) {
 		$scope.bid = null;
 		$scope.ask = null;
 		$scope.buy = 300;
 		$scope.sell = 150;
 		$scope.placeBid = function() {
-			$log.debug("Bid placed for " + $scope.bid);
+			$log.debug('Bid placed for ' + $scope.bid);
 			tradeService.addBid($scope.bid);
 			$scope.bid = null;
 		};
