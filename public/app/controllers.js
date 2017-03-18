@@ -25,23 +25,20 @@ angular.module('plzsq.controllers', [])
 		};
 	}])
 	.controller('adminController', ['$scope', '$log', 'socketService', function ($scope, $log, socketService) {
+		var _onFileMessage = function adminControllerOnFileMessage(user, message) {
+			$log.debug("adminController.onFileMessage: %j", message);
+		}
 		$scope.submit = function() {
 			let uploadedFile = $('#configUploadFile')[0].files[0];
 			if (uploadedFile) {
+				// TODO JJDM Need more validation (is yaml, etc.)
 				$scope.upload(uploadedFile);
 	        }
 		};
 		$scope.upload = function(file) {
 			socketService.sendFile(file);
-			// Upload.upload({
-			// 	url: '/admin/config',
-			// 	data: {configUploadFile: file, 'username': $scope.username}
-			// }).then(function success(res) {
-			// 	$log.debug('Success ' + res.config.data.configUploadFile.name + 'uploaded. Response: ' + res.data.message);
-			// }, function error(res) {
-			// 	$log.debug('Error status: ' + res.status + ' ' + res.data.error);
-			// });
 		};
+		socketService.registerOnMessage("UPLOAD_FILE", _onFileMessage);
 	}])
 	.controller('chartController', ['$scope', '$log', 'tradeService', function ($scope, $log, tradeService) {
 

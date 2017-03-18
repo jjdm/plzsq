@@ -8,23 +8,53 @@ angular.module('plzsq.services', ['ngCookies'])
 		};
 	}])
 	.factory('socketService', ['$rootScope', '$log', 'urlService', function ($rootScope, $log, urlService) {
-		// get the port and user from the url
-		var ws = new WebSocket(urlService.getWsUrl());
-		ws.binaryType = 'arraybuffer';
-		ws.onopen = function open() {
+
+		var _registered = [];
+		var _user = urlService.getUser();
+
+		var _ws = new WebSocket(urlService.getWsUrl());
+		_ws.binaryType = 'arraybuffer';
+		_ws.onopen = function open() {
 			$log.debug('Connected to: ' + urlService.getWsUrl());
 		};
-		ws.onmessage = function receive(message) {
-			$log.debug(message);
-			$log.debug(JSON.parse(message.data));
+		_ws.onmessage = function receive(message) {
+			handleMessage(_user, message);
 		};
+		var handleMessage = function(user, message) {
+			var payload = JSON.parse(message.data);
+			$log.debug("Message Received in handleMessage: %j", payload);
+			var match = false;
+			_registered.forEach(function(r) {
+				if(r.type === payload.type) {
+					r.handler(user, payload);
+					match = true;
+				}
+			});
+			if(!match) {
+				$log.error('Could not match for message type %s', payload.type);
+			}
+		};
+
 		return {
 			sendFile: function(file) {
-				$log.debug('Sending File');
-				ws.send(file);
+				$log.debug('Sending File: ', file.name);
+				_ws.send(file);
 			},
-			getUser: function() { return urlService.getUser(); }
+			send: function(type, data) {
+				var message = data;
+				message.type = type;
+				message.user = user;
+				_ws.send(JSON.stringify(message));
+			},
+			getUser: function() {
+				return urlService.getUser();
+			},
+			registerOnMessage: function(messageType, callbackFunction) {
+				_registered.push({type: messageType, handler: callbackFunction});
+				$log.debug('Registered %s from %s.', messageType, callbackFunction.name);
+			}
 		};
+
 	}])
 	.factory('tradeService', ['socketService', '$log', function (socketService, $log) {
 		return {
