@@ -1,4 +1,4 @@
-angular.module('plzsq.controllers', ['ngFileUpload'])
+angular.module('plzsq.controllers', [])
 	.controller('loginController', ['$scope', '$log', function ($scope, $log) {
 		$scope.userId = null;
 		$scope.login = function() {
@@ -17,14 +17,18 @@ angular.module('plzsq.controllers', ['ngFileUpload'])
 				var file = $('input.config-upload-file', id);
 				display.val(file.val());
 				button.click(function() { file.click(); });
-				file.change(function() { display.val(file.val()); });
+				file.change(function() {
+					var toDisplay = file.val().replace(/.*\\/, ''); // Chrome uses 'fakepath' here.
+					display.val(toDisplay);
+				});
 		    }
 		};
 	}])
-	.controller('adminController', ['$scope', '$log', 'socketService', 'Upload', function ($scope, $log, socketService, Upload) {
+	.controller('adminController', ['$scope', '$log', 'socketService', function ($scope, $log, socketService) {
 		$scope.submit = function() {
-			if ($scope.uploadForm.configUploadFile.$valid && $scope.configUploadFile) {
-				$scope.upload($scope.configUploadFile);
+			let uploadedFile = $('#configUploadFile')[0].files[0];
+			if (uploadedFile) {
+				$scope.upload(uploadedFile);
 	        }
 		};
 		$scope.upload = function(file) {

@@ -4,14 +4,14 @@ block middle
 	div.col-lg-9(ng-controller='adminController')
 		form.form-horizontal(ref='uploadForm', id='uploadForm', name='uploadForm')
 			.form-group
-				.col-lg-4
+				.col-lg-3
 					.alert.alert-warning
 						p Some message
-				label.control-label.col-lg-2(for='configFileDisplay') Upload New Configuration File:
+				label.control-label.col-lg-3(for='configFileDisplay') Upload New Configuration File:
 				.col-lg-5
 					div#adminUpload.input-group(config-upload)
 						input#configUploadDisplay.form-control.config-upload-display(type='text', name='configUploadDisplay')
-						input#configUploadFile.hidden.config-upload-file(type='file', name='configUploadFile', ngf-select, ng-model='configUploadFile')
+						input#configUploadFile.hidden.config-upload-file(type='file', name='configUploadFile')
 						span.input-group-btn
 							button#configUploadButton.btn.btn-default.config-upload-button(type='button' ng-click='select()') Browse...
 				.col-lg-1
