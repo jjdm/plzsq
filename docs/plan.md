@@ -12,6 +12,49 @@ Implementation Plan
 *	Robot implementations.
 *	Starting rounds - pause vs. explicit start.
 
+Actions
+=======
+
+All messages will have: type, creator, [id, date - generated on the server side]
+
+* From Client-to-Server
+	* Experimenter
+		* Upload file/configuration (file)
+		* Remove trader (userId)
+		* Start instructions (command)
+		* Start trading (command)
+		* [Start participation] (command)
+		* Start round (command, roundId)
+		* End round (command, roundId)
+		* Save log, Save CSV (command, fileType)
+		* [Restart experiment/round based on log] (file, round)
+	* Trader
+		* Enter Name
+		* Next/Previous
+		* Wheel guess
+		* Take test
+		* Bid, Ask, Buy, Sell
+		* [Chat]
+		* [Participate, Clue, Clues]
+* From Server-to-Client
+	* State Change
+		* Restart Instructions
+		* Trading Started
+		* Trading Paused
+		* Round Started/Ended
+		* Round will start (auto start)
+		* Experiment Ended
+		* [Chat Started/Ended]
+	* Market Data
+		* Clues and Shared Message
+		* Time Remaining (State)
+		* Book (All bids, asks, trades)
+		* Best bid/asks
+	* Trader Info (to Experimenter)
+		* Instruction guesses
+		* Test attempts
+		* Round Scores/Cash
+
 
 Topics to Cover
 ===============
