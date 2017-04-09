@@ -17,5 +17,6 @@ apps:
       PORT: 9080
       LAB: 1
       NODE_ENV: development
+      ADMIN_LOGIN: experimenter
     env_production:
       NODE_ENV: production

@@ -1,11 +1,10 @@
 "use strict";
 const PORT = process.env.PORT || 8080;
-const USE_CDN = false; // TODO JJDM Tie this to development vs. production
-const ADMIN_LOGIN = 'experimenter';
+const USE_CDN = process.env.NODE_ENV == 'production';
+const ADMIN_LOGIN = process.env.ADMIN_LOGIN || 'experimenter';
 
 // libraries
 const express = require('express');
-const fileUpload = require('express-fileupload');
 const http = require('http');
 const WebSocket = require('ws');
 const path = require('path');
@@ -36,7 +35,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload());
 
 // error creation
 function createError(message, status) {
@@ -97,30 +95,7 @@ app.use('/admin', function(req, res, next) {
 // admin page
 app.get('/admin', function(req, res, next) {
 	res.locals.title = 'Experimenter Page';
-	if(res.uploadMessage) {
-		res.locals.uploadMessage = res.uploadMessage;
-		res.uploadMessage = undefined;
-	}
 	res.render('admin');
-});
-
-// upload file
-app.post('/admin/config', function(req, res, next) {
-	log.debug(req.files);
-	if (!req.files.configUploadFile) {
-		res.status(500).json({ error: 'No file uploaded.' });
-//		socket.send('experimenter', {type: 'message', error: false, message: 'Please select a file to upload.'});
-	} else {
-		let uploadedFile = req.files.configUploadFile;
-		uploadedFile.mv(`/git/plzsq/uploads/${uploadedFile.name}`, function(err) {
-			if(err) {
-				next(err);
-			} else {
-				// TODO JJDM Shutdown experiment, and load configuration
-				res.json({message: 'File uploaded!'});
-			}
-		});
-	}
 });
 
 // trader

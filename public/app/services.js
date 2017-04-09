@@ -57,11 +57,25 @@ angular.module('plzsq.services', ['ngCookies'])
 
 	}])
 	.factory('tradeService', ['socketService', '$log', function (socketService, $log) {
-		return {
-			bids: [{user: 'a1', amount: 100}, {user:'a7', amount: 220}, {user:'a2', amount: 240}, {user:'a7', amount: 275}],
-			asks: [{user:'a3', amount: 350}, {user:'a4', amount: 300}, {user:'a5', amount: 400}, {user:'a10', amount: 325}],
-			trades: [{user:'a3', amount: 210}, {user:'a4', amount: 250}, {user:'a5', amount: 390}, {user:'a10', amount: 370}],
-			addBid: function(bid) { this.bids.push({ user: socketService.getUser(), amount: bid }); $log.debug('New bid'); }
+
+		var _configuration = null;
+		var _bids = [{user: 'a1', amount: 100}, {user:'a7', amount: 220}, {user:'a2', amount: 240}, {user:'a7', amount: 275}];
+		var _asks = [{user:'a3', amount: 350}, {user:'a4', amount: 300}, {user:'a5', amount: 400}, {user:'a10', amount: 325}];
+		var _trades = [{user:'a3', amount: 210}, {user:'a4', amount: 250}, {user:'a5', amount: 390}, {user:'a10', amount: 370}];
+
+		var _onConfiguration = function tradeServiceOnConfiguration(user, message) {
+			_configuration = message.data;
+			$log.debug("tradeService.tradeServiceOnConfiguration: %j", _configuration);
 		};
+
+		socketService.registerOnMessage("CONFIGURATION", _onConfiguration);
+
+		return {
+			bids: _bids,
+			asks: _asks,
+			trades: _trades,
+			addBid: function(bid) { _bids.push({ user: socketService.getUser(), amount: bid }); $log.debug('New bid'); }
+		};
+
 	}])
 ;
